@@ -1,0 +1,68 @@
+<!DOCTYPE HTML><html></html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ESP Servo Tester</title>
+  <style>
+    html {font-family: Arial; display: inline-block; text-align: center;}
+    h2 {font-size: 2.3rem;}
+    p {font-size: 1.9rem;}
+    body {max-width: 400px; margin:0px auto; padding-bottom: 25px;}
+    .slider { -webkit-appearance: none; margin: 14px; width: 360px; height: 25px; background: #FFD65C;
+      outline: none; -webkit-transition: .2s; transition: opacity .2s;}
+    .slider::-webkit-slider-thumb {-webkit-appearance: none; appearance: none; width: 35px; height: 35px; background: #003249; cursor: pointer;}
+    .slider::-moz-range-thumb { width: 35px; height: 35px; background: #003249; cursor: pointer; } 
+    .btn {
+      border-radius:5cqmin;
+      width:25%;
+    }
+    .btn.on{
+      background-color: aqua;
+    }
+ </style>
+</head>
+<body>
+  <h2>ESP Servo Tester</h2>
+  <button id="led" class="btn">LED</button>
+  <p><span id="servo0angle"> Servo 0</span></p>
+  <p><input type="range" onchange="updateServo(this, 0, 'servo0angle')" id="pwmSlider" min="0" max="180" value="0" step="1" class="slider"></p>
+  <p><span id="servo1angle"> Servo 1</span></p>
+  <p><input type="range" onchange="updateServo(this, 1, 'servo1angle')" id="pwmSlider1" min="0" max="180" value="0" step="1" class="slider" ></p>
+  <p><span id="servo2angle"> Servo 2</span></p>
+  <p><input type="range" onchange="updateServo(this, 2, 'servo2angle')" id="pwmSlider1" min="0" max="180" value="0" step="1" class="slider" ></p>
+  <p><span id="servo3angle"> Servo 3</span></p>
+  <p><input type="range" onchange="updateServo(this, 3, 'servo3angle')" id="pwmSlider1" min="0" max="180" value="0" step="1" class="slider" ></p>
+  <p><span id="servo4angle"> Servo 4</span></p>
+  <p><input type="range" onchange="updateServo(this, 4, 'servo4angle')" id="pwmSlider1" min="0" max="180" value="0" step="1" class="slider" ></p>
+  <p><span id="servo5angle"> Servo 5</span></p>
+  <p><input type="range" onchange="updateServo(this, 5, 'servo5angle')" id="pwmSlider1" min="0" max="180" value="0" step="1" class="slider" ></p>
+<script>
+var led = document.getElementById('led');
+var ledStatus = 'off';
+led.addEventListener('click', ()=>{
+  var xhr = new XMLHttpRequest();
+  if(ledStatus == 'off')
+  {
+    led.classList.add('on');
+    ledStatus = 'on';
+  }
+  else{
+    led.classList.remove('on');
+    ledStatus = 'off';
+    // led.classList.add('off');
+  }
+  xhr.open("GET", ledStatus=='on'?"/?led=On":"/?led=Off", true);
+  xhr.send();
+
+})
+
+function updateServo(element, servo_id, servo_angle) {
+  var sliderValue = element.value;
+  document.getElementById(servo_angle).innerHTML = sliderValue;
+  console.log("/?servo"+servo_id+"="+sliderValue);
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/?servo"+servo_id+"="+sliderValue, true);
+  xhr.send();
+}
+</script>
+</body>
+</html>
